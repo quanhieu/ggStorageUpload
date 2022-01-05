@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 
-const uploadImage = require('./helpers')
+const service = require('./services')
 
 const app = express()
 
@@ -23,17 +23,63 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.post('/uploads', async (req, res, next) => {
   try {
     const myFile = req.file
-    const imageUrl = await uploadImage(myFile)
+    const imageUrl = await service.uploadImage(myFile)
 
-    res
-      .status(200)
-      .json({
-        message: "Upload was successful",
-        data: imageUrl
-      })
+    res.status(200).json({
+      message: "Upload was successful",
+      data: imageUrl
+    })
   } catch (error) {
-    console.log(`\n error ${error} \n`)
+    console.log(`\n Uploads error ${error} \n`)
     next(error)
+  }
+})
+
+// get sign to upload at frontend
+app.get('/preSignedUrl', async (req, res, next) => {
+  try {
+    const fileName = req.query.fileName
+    const data = await service.createSignedUrlToUpload(fileName)
+
+    res.status(200).json({
+      message: "Get pre-signed url was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n Get pre-signed url error ${err} \n`)
+    next(err)
+  }
+})
+
+// get url resource by pathName
+app.get('/getResourceByPreSignedUrl', async (req, res, next) => {
+  try {
+    const pathName = req.query.pathName
+    const data = await service.getResourceBySignedUrl(pathName)
+
+    res.status(200).json({
+      message: "Get resource by pre-signed url was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n Get resource by pre-signed url error ${err} \n`)
+    next(err)
+  }
+})
+
+// delete resource
+app.delete('/removeResource', async (req, res, next) => {
+  try {
+    const pathName = req.query.pathName
+    const data = await service.removeResource(pathName)
+
+    res.status(200).json({
+      message: "Remove resource was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n Remove resource error ${err} \n`)
+    next(err)
   }
 })
 
