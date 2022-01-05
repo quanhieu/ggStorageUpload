@@ -1,3 +1,4 @@
+const moment = require('moment')
 const util = require('util')
 const gc = require('../config')
 const bucket = gc.bucket('continuumcyber_storage_bucket')
@@ -15,9 +16,13 @@ const { format } = util
 const uploadImage = (file) => new Promise((resolve, reject) => {
   const { originalname, buffer, mimetype } = file
 
-  const blob = bucket.file(originalname.replace(/ /g, "_"))
+  const markDownDate = `images/${moment().format('YYYYMMDDHHMMSS')}_`;
+  const storageFileName = `${markDownDate}${originalname.replace(/ /g, "_")}`
+  const blob = bucket.file(storageFileName)
   const blobStream = blob.createWriteStream({
-    resumable: false
+    // resumable: false
+    metadata: { contentType: mimetype },
+    // public: true
   })
 
   blobStream.on('finish', () => {
