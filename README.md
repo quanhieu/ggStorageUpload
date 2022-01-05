@@ -3,6 +3,13 @@
 Add GCP Service Account key into folder ``config`` as ``keys.json``
 
 >Start
+```bash
+Start backend:
+  yarn start
+Start frontend
+  cd client && yarn dev
+```
+
 
 - Upload ``http://localhost:9001/uploads`` 
 ```
