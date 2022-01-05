@@ -43,8 +43,9 @@ const uploadImage = async (file) => {
 
   const [signedUrl] = await blob.getSignedUrl({
     version: 'v4',
-    expires: moment().add(24, 'hours').utc().format("YYYY-MM-DD HH:mm:ss"),
-    action: 'read'
+    action: 'read',
+    expires: Date.now() + 60 * 60 * 1000, // 60 minutes
+    // expires: moment().add(1, 'hours').utc().format("YYYY-MM-DD HH:mm:ss"), // 1 hour
   });
 
   return {
