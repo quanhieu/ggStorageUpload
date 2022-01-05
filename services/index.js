@@ -69,7 +69,9 @@ exports.createSignedUrlToUpload = async(fileName) => {
     version: 'v4',
     action: 'write',
     expires: expiredTime, // 15 minutes
-    contentType: 'application/octet-stream',
+    // contentType: 'image/*',
+    // contentType: 'application/octet-stream',
+    // contentType: 'application/json',
   };
 
   const [signedUrl] = await blob.getSignedUrl(options);
@@ -111,4 +113,39 @@ exports.removeResource = async(pathName) => {
     removeData: removeData,
     pathName: pathName,
   };
+}
+
+exports.enableCors = async(origin = "*") => {
+  // origin = "http://localhost:3000"
+  const maxAgeSeconds = 60 * 60 * 60
+  const res = await bucket.setCorsConfiguration([
+    {
+      maxAgeSeconds: maxAgeSeconds,
+      method: ["GET","HEAD","PUT"],
+      origin: [origin],
+      // responseHeader: ["X-Requested-With", "Access-Control-Allow-Origin", 'Content-Type'],
+      responseHeader: ['*'],
+    },
+  ]);
+
+  return res;
+}
+
+exports.viewCors = async() => {
+  const [metadata] = await bucket.getMetadata();
+
+  const data = [];
+  for (const [key, value] of Object.entries(metadata)) {
+    data.push({
+      [key]: value
+    })
+    console.log(`${key}: ${value}`);
+  }
+  return data
+}
+
+exports.disableCors = async() => {
+  const data = await bucket.setCorsConfiguration([]);
+
+  return data;
 }

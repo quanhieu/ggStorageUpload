@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const multer = require('multer')
+const cors = require('cors')
 
 const service = require('./services')
 
@@ -18,7 +19,8 @@ const multerMid = multer({
 app.disable('x-powered-by')
 app.use(multerMid.single('file'))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cors())
 
 app.post('/uploads', async (req, res, next) => {
   try {
@@ -83,6 +85,49 @@ app.delete('/removeResource', async (req, res, next) => {
   }
 })
 
+// CORS GCP
+app.get('/enableCors', async (req, res, next) => {
+  try {
+    const data = await service.enableCors()
+
+    res.status(200).json({
+      message: "Enable Cors was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n Enable Cors error ${err} \n`)
+    next(err)
+  }
+})
+
+app.get('/viewCors', async (req, res, next) => {
+  try {
+    const data = await service.viewCors()
+
+    res.status(200).json({
+      message: "View Cors was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n View Cors error ${err} \n`)
+    next(err)
+  }
+})
+
+app.get('/disableCors', async (req, res, next) => {
+  try {
+    const data = await service.disableCors()
+
+    res.status(200).json({
+      message: "Disable Cors was successful",
+      data
+    })
+  } catch (err) {
+    console.log(`\n Disable Cors error ${err} \n`)
+    next(err)
+  }
+})
+
 app.use((err, req, res, next) => {
   res.status(500).json({
     error: err,
@@ -92,5 +137,5 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(9001, () => {
-  console.log('app now listening for requests!!!')
+  console.log('Server is listening on port 9001')
 })
