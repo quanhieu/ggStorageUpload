@@ -4,12 +4,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "dev": "concurrently \"nodemon index.js\" \"cd ./client && yarn dev\""
   },
   "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^5.16.1",
     "body-parser": "^1.19.1",
+    "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "moment": "^2.29.1",

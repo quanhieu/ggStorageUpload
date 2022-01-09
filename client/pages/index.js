@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import UploadComponent from '../components/uploadComponent'
+import CKeditor5 from '../components/custom-ckeditor5'
 
 export default function Home() {
   return (
@@ -19,6 +20,9 @@ export default function Home() {
         
         <p>Input Image</p>
         <UploadComponent/>
+        
+        <p>CKeditor 5</p>
+        <CKeditor5/>
       </main>
 
       <footer className={styles.footer}>

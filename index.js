@@ -16,20 +16,32 @@ const multerMid = multer({
   },
 });
 
-app.disable('x-powered-by')
-app.use(multerMid.single('file'))
+// app.disable('x-powered-by')
+// app.use(multerMid.single('upload'))
+// app.use(multerMid.single('file'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 
-app.post('/uploads', async (req, res, next) => {
+app.post('/upload', multerMid.single('upload'), async(req, res, next) =>{
+  const myFile = req.file
+  const imageUrl = await service.uploadImage(myFile)
+
+  res.status(200).json({
+    uploaded: true,
+    url: imageUrl.publicUrl,
+    data: imageUrl
+  })
+})
+
+app.post('/uploads', multerMid.single('file'), async (req, res, next) => {
   try {
     const myFile = req.file
     const imageUrl = await service.uploadImage(myFile)
 
     res.status(200).json({
       message: "Upload was successful",
-      data: imageUrl
+      data: imageUrl,
     })
   } catch (error) {
     console.log(`\n Uploads error ${error} \n`)
