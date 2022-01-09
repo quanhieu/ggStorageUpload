@@ -39,12 +39,13 @@ const CKEditorCustom = ({ data, updateContent }) => {
               // The URL that the images are uploaded to.
               uploadUrl: 'http://localhost:9001/upload',
               // Enable the XMLHttpRequest.withCredentials property.
-              withCredentials: true,
+              withCredentials: false,
               // Headers sent along with the XMLHttpRequest to the upload server.
               headers: {
                 // 'Access-Control-Allow-Origin': '*',
                 // 'Access-Control-Allow-Credentials': '*',
-                'X-CSRF-TOKEN': 'CSRF-Token',
+
+                // 'X-CSRF-TOKEN': 'CSRF-Token',
                 Authorization: 'Bearer <JSON Web Token>'
               }
             },

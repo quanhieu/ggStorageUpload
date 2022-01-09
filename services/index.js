@@ -15,6 +15,7 @@ const { format } = util
 
  exports.uploadImage = async (file) => {
   const { originalname, buffer, mimetype } = file
+  console.log(`\n file ${file} \n`)
 
   const markDownDate = `images/${moment().format('YYYYMMDDHHMMSS')}_`;
   const storageFileName = `${markDownDate}${originalname.replace(/ /g, "_")}`
