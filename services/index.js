@@ -45,7 +45,10 @@ const bucket = bucketKeyFilename
     // .on('error', (err) => {
     //   reject(`Unable to upload image, something went wrong`, err)
     // })
-    .on('error', err => reject(err))
+    .on('error', err => {
+      console.log(`\n uploadFileLite error ${err} \n`)
+      reject(`uploadImage:\n ${err}`)
+    })
     .end(buffer)
   
   })
