@@ -1,8 +1,16 @@
 const moment = require('moment')
 const util = require('util')
-const gc = require('../config')
-const bucket = gc.bucket('continuumcyber_storage_bucket')
 const { format } = util
+const { bucketKeyFilename, bucketCredentials } = require('../config') 
+
+/*
+  Chose StorageOptions
+*/
+console.log(`Using StorageOptions: bucketKeyFilename \n`)
+const bucket = bucketKeyFilename
+// console.log(`Using StorageOptions: bucketCredentials \n`)
+// const bucket = bucketCredentials
+
 
 /**
  *
@@ -149,4 +157,10 @@ exports.disableCors = async() => {
   const data = await bucket.setCorsConfiguration([]);
 
   return data;
+}
+
+exports.transformJsonToString = (json) => {
+  const transformed = JSON.stringify(json)
+  console.log(`\n Take this transformed: ${transformed} \n`)
+  return transformed
 }

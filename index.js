@@ -140,6 +140,24 @@ app.get('/disableCors', async (req, res, next) => {
   }
 })
 
+// Transform json key to string
+app.post('/transformJsonKey', async (req, res, next) => {
+  try {
+    const { jsonKey } = req.body
+    const stringKey = await service.transformJsonToString(jsonKey)
+
+    res.status(200).json({
+      message: "TransformJsonKey successful - Note: Use data-value in terminal",
+      data: stringKey,
+    })
+  } catch (error) {
+    console.log(`\n TransformJsonKey error ${error} \n`)
+    next(error)
+  }
+})
+
+
+
 app.use((err, req, res, next) => {
   res.status(500).json({
     error: err,
@@ -148,6 +166,6 @@ app.use((err, req, res, next) => {
   next()
 })
 
-app.listen(9001, () => {
-  console.log('Server is listening on port 9001')
+app.listen(process.env.PORT, () => {
+  console.log(`Server is listening on port ${process.env.PORT}`)
 })
