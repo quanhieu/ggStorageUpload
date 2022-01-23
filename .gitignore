@@ -3,3 +3,5 @@ keys.json
 node_modules
 
 .next
+
+.env
